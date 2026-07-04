@@ -147,19 +147,19 @@
 </div>
 <!-- Track Info -->
 <div class="text-center w-full max-w-[320px] mb-block-md px-block-xs">
-<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-base_unit truncate w-full">OUR SUNFLOWER GROOVE</h2>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-base_unit truncate w-full">MY SUNFLOWER HARU</h2>
 <p class="font-body-md text-body-md text-on-surface-variant font-bold bg-surface-container-highest inline-block px-block-sm py-base_unit border-2 border-on-surface-variant">The Pixel Duo</p>
 </div>
 <!-- Experience Bar (Progress) -->
 <div class="w-full max-w-[320px] mb-block-md">
 <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-base_unit font-bold">
-<span>01:42</span>
-<span>03:15</span>
+<span>00:00</span>
+<span>04:51</span>
 </div>
 <!-- The Track -->
 <div class="h-6 w-full border-4 border-on-surface bg-inverse-surface relative overflow-hidden flex items-center p-[2px]">
 <!-- The Fill (Experience Green) -->
-<div class="h-full bg-secondary-fixed w-[55%] relative z-10"></div>
+<div class="h-full bg-secondary-fixed w-[0%] relative z-10"></div>
 <!-- The Notches -->
 <div class="absolute inset-0 exp-bg-pattern z-20 pointer-events-none opacity-50"></div>
 </div>
@@ -178,6 +178,26 @@
 <button class="w-12 h-12 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
 <span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'FILL' 1;">skip_next</span>
 </button>
+</div>
+<!-- Volume Controls -->
+<div class="w-full max-w-[320px] mt-block-md flex items-center gap-block-sm">
+<!-- Volume Down -->
+<button id="volume-down" aria-label="Decrease volume" class="w-12 h-12 shrink-0 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
+<span class="material-symbols-outlined text-on-surface">volume_down</span>
+</button>
+<!-- Volume Meter -->
+<div id="volume-bar" class="h-6 flex-grow border-4 border-on-surface bg-inverse-surface relative overflow-hidden flex items-center p-[2px] cursor-pointer">
+<div id="volume-fill" class="h-full bg-tertiary w-[80%] relative z-10"></div>
+<div class="absolute inset-0 exp-bg-pattern z-20 pointer-events-none opacity-50"></div>
+</div>
+<!-- Volume Up -->
+<button id="volume-up" aria-label="Increase volume" class="w-12 h-12 shrink-0 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
+<span class="material-symbols-outlined text-on-surface">volume_up</span>
+</button>
+</div>
+<!-- Volume Readout -->
+<div class="w-full max-w-[320px] mt-base_unit flex justify-end">
+<span id="volume-value" class="font-label-sm text-label-sm text-on-surface-variant font-bold bg-surface-container-highest inline-block px-block-xs py-[2px] border-2 border-on-surface-variant">VOL 80%</span>
 </div>
 </main>
 <!-- BottomNavBar -->
@@ -254,5 +274,72 @@ document.addEventListener('DOMContentLoaded', () => {
             playPauseIcon.textContent = 'play_arrow';
         }
     });
+
+    // --- Volume Controls ---
+    const volumeDownBtn = document.getElementById('volume-down');
+    const volumeUpBtn = document.getElementById('volume-up');
+    const volumeBar = document.getElementById('volume-bar');
+    const volumeFill = document.getElementById('volume-fill');
+    const volumeValue = document.getElementById('volume-value');
+    const VOLUME_STEP = 0.1;
+
+    // Start at 80% to match the initial UI
+    audio.volume = 0.8;
+
+    function updateVolumeUI() {
+        const percent = Math.round(audio.volume * 100);
+        volumeFill.style.width = `${percent}%`;
+        volumeValue.textContent = `VOL ${percent}%`;
+        // Reflect mute state on the down icon for extra feedback
+        const downIcon = volumeDownBtn.querySelector('span');
+        downIcon.textContent = audio.volume === 0 ? 'volume_off' : 'volume_down';
+    }
+
+    function setVolume(value) {
+        // Clamp between 0 and 1
+        audio.volume = Math.min(1, Math.max(0, value));
+        updateVolumeUI();
+    }
+
+    volumeDownBtn.addEventListener('click', () => {
+        // Round to avoid floating point drift (e.g. 0.30000000000004)
+        setVolume(Math.round((audio.volume - VOLUME_STEP) * 10) / 10);
+    });
+
+    volumeUpBtn.addEventListener('click', () => {
+        setVolume(Math.round((audio.volume + VOLUME_STEP) * 10) / 10);
+    });
+
+    // Click / drag on the volume meter to set volume directly
+    function setVolumeFromEvent(e) {
+        const rect = volumeBar.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        setVolume(pos);
+    }
+
+    let draggingVolume = false;
+    volumeBar.addEventListener('mousedown', (e) => {
+        draggingVolume = true;
+        setVolumeFromEvent(e);
+    });
+    document.addEventListener('mousemove', (e) => {
+        if (draggingVolume) setVolumeFromEvent(e);
+    });
+    document.addEventListener('mouseup', () => {
+        draggingVolume = false;
+    });
+
+    // Keyboard shortcuts: Arrow Up / Down adjust volume
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setVolume(Math.round((audio.volume + VOLUME_STEP) * 10) / 10);
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setVolume(Math.round((audio.volume - VOLUME_STEP) * 10) / 10);
+        }
+    });
+
+    updateVolumeUI();
 });
 </script></body></html>

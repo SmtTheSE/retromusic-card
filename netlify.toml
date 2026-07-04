@@ -1,0 +1,25 @@
+# Netlify configuration for the Pixel Player static site.
+# This is a plain static site (no build step): index.html + assets live at the repo root.
+
+[build]
+  # Publish the repository root as-is.
+  publish = "."
+  # No build/bundling step is required for a static HTML page.
+  command = ""
+
+# Serve index.html for the root path (Netlify does this by default, kept explicit).
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# Long-cache the large media assets so repeat visits are fast.
+[[headers]]
+  for = "/music.mp3"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
