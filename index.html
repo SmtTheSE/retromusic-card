@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pixel Player - Groove</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts for Pixel Aesthetic -->
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=JetBrains+Mono:wght@700&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS Setup -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#705d00",
+                        "inverse-primary": "#ffb68c",
+                        "surface-container": "#f7eed2",
+                        "secondary": "#006e1c",
+                        "on-secondary-fixed": "#002204",
+                        "on-primary": "#ffffff",
+                        "surface": "#fff9ed",
+                        "surface-bright": "#fff9ed",
+                        "surface-container-low": "#fcf3d8",
+                        "primary-container": "#8b4513",
+                        "primary-fixed": "#ffdbc9",
+                        "on-primary-fixed-variant": "#753401",
+                        "error": "#ba1a1a",
+                        "primary": "#6c2f00",
+                        "on-surface": "#1f1c0b",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#faf0d5",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb68c",
+                        "secondary-container": "#91f78e",
+                        "background": "#fff9ed",
+                        "on-tertiary-container": "#4c3e00",
+                        "secondary-fixed-dim": "#78dc77",
+                        "on-surface-variant": "#54433a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#ebe2c8",
+                        "on-background": "#1f1c0b",
+                        "on-secondary-container": "#00731e",
+                        "on-primary-container": "#ffc29f",
+                        "on-tertiary-fixed-variant": "#544600",
+                        "surface-variant": "#ebe2c8",
+                        "inverse-surface": "#35301e",
+                        "on-primary-fixed": "#321200",
+                        "tertiary-fixed": "#ffe16d",
+                        "surface-tint": "#934b19",
+                        "on-secondary-fixed-variant": "#005313",
+                        "outline": "#877369",
+                        "surface-dim": "#e2dabf",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#e9c400",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#dac2b6",
+                        "surface-container-high": "#f1e8cd",
+                        "secondary-fixed": "#94f990",
+                        "on-tertiary-fixed": "#221b00",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#c9a900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "block-xs": "8px",
+                        "block-sm": "16px",
+                        "base_unit": "4px",
+                        "block-md": "32px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "48px",
+                        "block-lg": "64px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["'Courier Prime'", "monospace"],
+                        "display-lg": ["'Space Mono'", "monospace"],
+                        "label-sm": ["'JetBrains Mono'", "monospace"],
+                        "headline-lg-mobile": ["'Space Mono'", "monospace"],
+                        "headline-lg": ["'Space Mono'", "monospace"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-2px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Pixelation for images to maintain sharp edges when scaled */
+        .pixelated {
+            image-rendering: pixelated;
+        }
+
+        /* Brutalist Button Depress Effect */
+        .brutalist-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px rgba(0,0,0,1) !important;
+        }
+
+        /* Progress Bar Notch Background Pattern */
+        .exp-bg-pattern {
+            background-image: linear-gradient(90deg, transparent 90%, #1f1c0b 90%);
+            background-size: 10% 100%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface h-screen w-screen overflow-hidden flex flex-col items-center select-none">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky top-0 z-50 flex items-center justify-between px-margin-mobile h-16 bg-surface border-b-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-block-xs">
+<span class="material-symbols-outlined text-[32px] text-tertiary">local_florist</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tighter">PIXEL PLAYER</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center border-4 border-on-surface bg-surface-container-high shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</header>
+<!-- Main Canvas (Scrollable area between navs) -->
+<main class="w-full flex-grow overflow-y-auto pb-24 flex flex-col items-center px-margin-mobile pt-block-md">
+<!-- Album Art Container -->
+<div class="w-full max-w-[320px] aspect-square border-4 border-on-surface bg-surface-container shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-block-xs mb-block-md relative">
+<img class="w-full h-full object-cover pixelated border-2 border-primary border-opacity-50" data-alt="A heavily pixelated, 8-bit style illustration of a couple standing in a vibrant, blocky sunflower field. The art style closely mimics vintage video game graphics with distinct square pixels, high contrast earthy browns, bright sunflower yellows, and a clear blue pixelated sky. The mood is nostalgic, adventurous, and cozy, fitting a retro digital aesthetic." src="IMG_2221.jpeg"/>
+<!-- Decorative corner blocks -->
+<div class="absolute top-0 left-0 w-4 h-4 bg-primary z-10"></div>
+<div class="absolute top-0 right-0 w-4 h-4 bg-primary z-10"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 bg-primary z-10"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-primary z-10"></div>
+</div>
+<!-- Track Info -->
+<div class="text-center w-full max-w-[320px] mb-block-md px-block-xs">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-base_unit truncate w-full">OUR SUNFLOWER GROOVE</h2>
+<p class="font-body-md text-body-md text-on-surface-variant font-bold bg-surface-container-highest inline-block px-block-sm py-base_unit border-2 border-on-surface-variant">The Pixel Duo</p>
+</div>
+<!-- Experience Bar (Progress) -->
+<div class="w-full max-w-[320px] mb-block-md">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-base_unit font-bold">
+<span>01:42</span>
+<span>03:15</span>
+</div>
+<!-- The Track -->
+<div class="h-6 w-full border-4 border-on-surface bg-inverse-surface relative overflow-hidden flex items-center p-[2px]">
+<!-- The Fill (Experience Green) -->
+<div class="h-full bg-secondary-fixed w-[55%] relative z-10"></div>
+<!-- The Notches -->
+<div class="absolute inset-0 exp-bg-pattern z-20 pointer-events-none opacity-50"></div>
+</div>
+</div>
+<!-- Media Controls -->
+<div class="flex items-center justify-center gap-block-md w-full max-w-[320px]">
+<!-- Shuffle -->
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
+<span class="material-symbols-outlined text-on-surface">shuffle</span>
+</button>
+<!-- Play/Pause -->
+<button class="w-20 h-20 flex items-center justify-center bg-tertiary border-4 border-on-surface shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] brutalist-btn text-on-tertiary hover:bg-primary hover:text-on-primary">
+<span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<!-- Skip Next -->
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
+<span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'FILL' 1;">skip_next</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t-4 border-on-surface shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] fixed bottom-0 left-0 w-full flex justify-around items-center h-20 bg-surface px-block-xs">
+<!-- GROOVE (Active) -->
+<button class="flex flex-col items-center justify-center bg-tertiary text-on-tertiary border-4 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] p-1 w-[72px] h-[64px] hover:bg-surface-container-highest transition-all brutalist-btn transform translate-x-[2px] translate-y-[2px]" style="box-shadow: none !important;">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">music_note</span>
+<span class="font-label-sm text-label-sm tracking-tight">GROOVE</span>
+</button>
+<!-- STASH (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-1 w-[72px] h-[64px] hover:bg-surface-container-highest transition-all brutalist-btn border-4 border-transparent hover:border-on-surface hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined mb-1">library_music</span>
+<span class="font-label-sm text-label-sm tracking-tight">STASH</span>
+</button>
+<!-- WORLD (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-1 w-[72px] h-[64px] hover:bg-surface-container-highest transition-all brutalist-btn border-4 border-transparent hover:border-on-surface hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined mb-1">map</span>
+<span class="font-label-sm text-label-sm tracking-tight">WORLD</span>
+</button>
+<!-- GEAR (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-1 w-[72px] h-[64px] hover:bg-surface-container-highest transition-all brutalist-btn border-4 border-transparent hover:border-on-surface hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-sm text-label-sm tracking-tight">GEAR</span>
+</button>
+</nav>
+<audio id="music-player" loop="" src="music.mp3"></audio><script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('music-player');
+    const playPauseBtn = document.querySelector('.w-20.h-20.bg-tertiary');
+    const playPauseIcon = playPauseBtn.querySelector('span');
+
+    // Add IDs for easier access
+    const progressFill = document.querySelector('.bg-secondary-fixed');
+    const currentTimeEl = document.querySelector('.flex.justify-between.font-label-sm span:first-child');
+    const durationTimeEl = document.querySelector('.flex.justify-between.font-label-sm span:last-child');
+    const progressBar = document.querySelector('.h-6.w-full.border-4');
+
+    // Set initial icon
+    playPauseIcon.textContent = 'play_arrow';
+
+    // Format time function
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return '00:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Load metadata to set duration
+    audio.addEventListener('loadedmetadata', () => {
+        durationTimeEl.textContent = formatTime(audio.duration);
+    });
+
+    // Update progress
+    audio.addEventListener('timeupdate', () => {
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = `${percent}%`;
+    });
+
+    // Click on progress bar to seek
+    progressBar.addEventListener('click', (e) => {
+        const rect = progressBar.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pos * audio.duration;
+    });
+
+    playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            playPauseIcon.textContent = 'pause';
+        } else {
+            audio.pause();
+            playPauseIcon.textContent = 'play_arrow';
+        }
+    });
+});
+</script></body></html>
