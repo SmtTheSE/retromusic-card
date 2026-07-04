@@ -2,7 +2,7 @@
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Pixel Player - Groove</title>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -118,14 +118,23 @@
         }
     </style>
 <style>
+    /* Fill exactly the visible viewport on any device.
+       100vh is the fallback; 100dvh accounts for mobile browsers'
+       dynamic toolbars so nothing gets clipped. */
     body {
-      min-height: max(884px, 100dvh);
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* Respect device safe areas (notch / home indicator). */
+    .safe-bottom {
+      padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
     }
   </style>
 </head>
-<body class="bg-surface font-body-md text-on-surface h-screen w-screen overflow-hidden flex flex-col items-center select-none">
+<body class="bg-surface font-body-md text-on-surface w-full overflow-hidden flex flex-col items-center select-none">
 <!-- TopAppBar -->
-<header class="w-full top-0 sticky top-0 z-50 flex items-center justify-between px-margin-mobile h-16 bg-surface border-b-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<header class="w-full shrink-0 z-50 flex items-center justify-between px-margin-mobile h-16 bg-surface border-b-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
 <div class="flex items-center gap-block-xs">
 <span class="material-symbols-outlined text-[32px] text-tertiary">local_florist</span>
 <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tighter">PIXEL PLAYER</h1>
@@ -135,9 +144,9 @@
 </button>
 </header>
 <!-- Main Canvas (Scrollable area between navs) -->
-<main class="w-full flex-grow overflow-y-auto pb-24 flex flex-col items-center px-margin-mobile pt-block-md">
+<main class="w-full flex-grow min-h-0 overflow-y-auto pb-block-md flex flex-col items-center px-margin-mobile pt-block-md">
 <!-- Album Art Container -->
-<div class="w-full max-w-[320px] aspect-square border-4 border-on-surface bg-surface-container shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-block-xs mb-block-md relative">
+<div class="w-full max-w-[320px] aspect-square max-h-[42svh] border-4 border-on-surface bg-surface-container shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-block-xs mb-block-sm relative">
 <img class="w-full h-full object-cover pixelated border-2 border-primary border-opacity-50" data-alt="A heavily pixelated, 8-bit style illustration of a couple standing in a vibrant, blocky sunflower field. The art style closely mimics vintage video game graphics with distinct square pixels, high contrast earthy browns, bright sunflower yellows, and a clear blue pixelated sky. The mood is nostalgic, adventurous, and cozy, fitting a retro digital aesthetic." src="IMG_2221.jpeg"/>
 <!-- Decorative corner blocks -->
 <div class="absolute top-0 left-0 w-4 h-4 bg-primary z-10"></div>
@@ -146,12 +155,12 @@
 <div class="absolute bottom-0 right-0 w-4 h-4 bg-primary z-10"></div>
 </div>
 <!-- Track Info -->
-<div class="text-center w-full max-w-[320px] mb-block-md px-block-xs">
+<div class="text-center w-full max-w-[320px] mb-block-sm px-block-xs">
 <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-base_unit truncate w-full">MY SUNFLOWER HARU</h2>
 <p class="font-body-md text-body-md text-on-surface-variant font-bold bg-surface-container-highest inline-block px-block-sm py-base_unit border-2 border-on-surface-variant">The Pixel Duo</p>
 </div>
 <!-- Experience Bar (Progress) -->
-<div class="w-full max-w-[320px] mb-block-md">
+<div class="w-full max-w-[320px] mb-block-sm">
 <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-base_unit font-bold">
 <span>00:00</span>
 <span>04:51</span>
@@ -180,7 +189,7 @@
 </button>
 </div>
 <!-- Volume Controls -->
-<div class="w-full max-w-[320px] mt-block-md flex items-center gap-block-sm">
+<div class="w-full max-w-[320px] mt-block-sm flex items-center gap-block-sm">
 <!-- Volume Down -->
 <button id="volume-down" aria-label="Decrease volume" class="w-12 h-12 shrink-0 flex items-center justify-center bg-surface-container-high border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] brutalist-btn hover:bg-tertiary hover:text-on-tertiary">
 <span class="material-symbols-outlined text-on-surface">volume_down</span>
@@ -201,7 +210,7 @@
 </div>
 </main>
 <!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 border-t-4 border-on-surface shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] fixed bottom-0 left-0 w-full flex justify-around items-center h-20 bg-surface px-block-xs">
+<nav class="shrink-0 w-full z-50 border-t-4 border-on-surface shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] flex justify-around items-center py-block-xs bg-surface px-block-xs safe-bottom">
 <!-- GROOVE (Active) -->
 <button class="flex flex-col items-center justify-center bg-tertiary text-on-tertiary border-4 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] p-1 w-[72px] h-[64px] hover:bg-surface-container-highest transition-all brutalist-btn transform translate-x-[2px] translate-y-[2px]" style="box-shadow: none !important;">
 <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">music_note</span>
